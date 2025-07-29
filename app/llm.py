@@ -175,12 +175,20 @@ class LLM:
     _instances: Dict[str, "LLM"] = {}
 
     def __new__(
-        cls, config_name: str = "default", llm_config: Optional[LLMSettings] = None
+        cls,
+        config_name: str = "default",
+        llm_config: Optional[Dict[str, LLMSettings]] = None,
     ):
+        # si on ne fournit pas de dict, on récupère celui de config.toml
+        if llm_config is None:
+            llm_config = config.llm
+
         if config_name not in cls._instances:
             instance = super().__new__(cls)
+            # on passe bien un dict à __init__
             instance.__init__(config_name, llm_config)
             cls._instances[config_name] = instance
+
         return cls._instances[config_name]
 
     def __init__(
@@ -188,7 +196,7 @@ class LLM:
     ):
         if not hasattr(self, "client"):  # Only initialize if not already initialized
             llm_config = llm_config or config.llm
-            llm_config = llm_config.get(config_name, llm_config["default"])
+            #llm_config = llm_config.get(config_name, llm_config["default"])
             self.model = llm_config.model
             self.max_tokens = llm_config.max_tokens
             self.temperature = llm_config.temperature

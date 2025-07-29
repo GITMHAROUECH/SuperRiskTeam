@@ -1,24 +1,56 @@
-from app.tool.base import BaseTool
-from app.tool.bash import Bash
-from app.tool.browser_use_tool import BrowserUseTool
-from app.tool.create_chat_completion import CreateChatCompletion
-from app.tool.planning import PlanningTool
-from app.tool.str_replace_editor import StrReplaceEditor
-from app.tool.terminate import Terminate
-from app.tool.tool_collection import ToolCollection
-from app.tool.web_search import WebSearch
-from app.tool.crawl4ai import Crawl4aiTool
+# app/tool/__init__.py
 
+from types import SimpleNamespace
 
+# --- Outils de base (modèles Pydantic) ---
+from .base import BaseTool, ToolResult, ToolFailure
+
+# --- Nouveaux outils personnalisés ---
+from .file_reader import FileReader
+from .file_writer import FileWriter
+from .calculator import Calculator
+from .python_execute import PythonExecute
+
+# --- Outils existants dans ton projet ---
+from .bash import Bash
+from .browser_use_tool import BrowserUseTool
+from .create_chat_completion import CreateChatCompletion
+from .planning import PlanningTool
+from .str_replace_editor import StrReplaceEditor
+from .terminate import Terminate
+from .web_search import WebSearch
+from .crawl4ai import Crawl4aiTool
+
+# (Optionnel) Enum ou collection initiale d’outils
+from .tool_collection import ToolCollection
+
+# --- Alias unique pour importer tous les outils via `Tool` ---
+Tool = SimpleNamespace(
+    # Outils de base
+    FileReader=FileReader,
+    FileWriter=FileWriter,
+    Calculator=Calculator,
+    PythonExecute=PythonExecute,
+    # Outils internes
+    Bash=Bash,
+    BrowserUseTool=BrowserUseTool,
+    CreateChatCompletion=CreateChatCompletion,
+    PlanningTool=PlanningTool,
+    StrReplaceEditor=StrReplaceEditor,
+    Terminate=Terminate,
+    WebSearch=WebSearch,
+    Crawl4aiTool=Crawl4aiTool,
+    # (éventuellement) collection enum
+    ToolCollection=ToolCollection,
+)
+
+# Exports publics
 __all__ = [
-    "BaseTool",
-    "Bash",
-    "BrowserUseTool",
-    "Terminate",
-    "StrReplaceEditor",
-    "WebSearch",
+    "BaseTool", "ToolResult", "ToolFailure",
+    "FileReader", "FileWriter", "Calculator",
+    "Bash", "BrowserUseTool", "CreateChatCompletion",
+    "PlanningTool", "StrReplaceEditor", "Terminate",
+    "WebSearch", "Crawl4aiTool",
     "ToolCollection",
-    "CreateChatCompletion",
-    "PlanningTool",
-    "Crawl4aiTool"
+    "Tool",
 ]
